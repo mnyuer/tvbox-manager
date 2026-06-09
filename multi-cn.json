@@ -1,0 +1,48 @@
+{
+  "urls": [
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/0707.json",
+      "name": "0707 OK影视专版"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/0821.json",
+      "name": "0 8 2 1"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/0826.json",
+      "name": "0 8 2 6"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/0827.json",
+      "name": "0 8 2 7"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/XYQ.json",
+      "name": "X Y Q"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/fty.json",
+      "name": "f t y"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/js.json",
+      "name": "j s"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/jsm.json",
+      "name": "j s m"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/jundie.json",
+      "name": "j u n d i e"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/mo_yu_er.json",
+      "name": "m o _ y u _ e r"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/mnyuer/tvbox-manager@main/static/clean_cn/xiaosa.json",
+      "name": "x i a o s a"
+    }
+  ]
+}

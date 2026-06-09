@@ -1,0 +1,48 @@
+{
+  "urls": [
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/0707.json",
+      "name": "0707 OK影视专版"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/0821.json",
+      "name": "0 8 2 1"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/0826.json",
+      "name": "0 8 2 6"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/0827.json",
+      "name": "0 8 2 7"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/XYQ.json",
+      "name": "X Y Q"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/fty.json",
+      "name": "f t y"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/js.json",
+      "name": "j s"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/jsm.json",
+      "name": "j s m"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/jundie.json",
+      "name": "j u n d i e"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/mo_yu_er.json",
+      "name": "m o _ y u _ e r"
+    },
+    {
+      "url": "https://ghproxy.com/https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean_ghproxy/xiaosa.json",
+      "name": "x i a o s a"
+    }
+  ]
+}

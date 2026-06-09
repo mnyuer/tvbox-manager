@@ -24,7 +24,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add static/clean static/jar multi.json
+          git add static/clean static/jar migu.m3u multi.json
           git diff --quiet && echo "No changes" || {
             git commit -m "🛠️ Daily TVBox refresh $(date +%F)"
             git push

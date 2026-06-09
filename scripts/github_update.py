@@ -109,3 +109,16 @@ for f in sorted(CLEAN.glob("*.json")):
 
 (WORK / "multi.json").write_text(json.dumps({"urls": urls}, ensure_ascii=False, indent=2))
 print(f"\nmulti.json: {len(urls)} sources")
+
+# ── Mirror Migu live source (M3U) ──
+MIGU_URL = "https://raw.githubusercontent.com/develop202/migu_video/main/interface.txt"
+print("\n=== Mirror Migu live source ===")
+try:
+    req = urllib.request.Request(MIGU_URL, headers=HEADERS)
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        data = resp.read()
+    (WORK / "migu.m3u").write_bytes(data)
+    ch_count = sum(1 for l in data.decode("utf-8", errors="replace").splitlines() if l.startswith("#EXTINF"))
+    print(f"  ✅ migu.m3u: {len(data)} bytes, {ch_count} channels")
+except Exception as e:
+    print(f"  ❌ Migu mirror failed: {e}")

@@ -1,48 +1,12 @@
 {
   "urls": [
     {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/jsm.json",
-      "name": "jsm全家桶"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/0821.json",
+      "url": "https://mnyuer.github.io/tvbox-manager/static/clean/0821.json",
       "name": "0821 大而全"
     },
     {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/0826.json",
-      "name": "0826 饭太硬版"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/0827.json",
-      "name": "0827 fongmi版"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/0707.json",
-      "name": "0707 OK影视专版"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/js.json",
-      "name": "drpy(js)+YouTube"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/XYQ.json",
-      "name": "XYQ 香雅情"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/fty.json",
-      "name": "饭太硬原版"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/xiaosa.json",
-      "name": "潇洒接口"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/mo_yu_er.json",
-      "name": "摸鱼儿"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/mnyuer/tvbox-manager/main/static/clean/jundie.json",
-      "name": "俊于"
+      "url": "https://mnyuer.github.io/tvbox-manager/static/clean/jsm.json",
+      "name": "jsm全家桶"
     }
   ]
 }

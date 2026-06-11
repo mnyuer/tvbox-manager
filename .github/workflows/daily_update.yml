@@ -18,6 +18,7 @@ jobs:
           GH_USER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
         run: |
+          # Remove stale sources not in current SOURCES
           python3 scripts/github_update.py
 
       - name: Commit & push

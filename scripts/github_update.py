@@ -27,6 +27,18 @@ JARS = [
     ("fan.txt",    "https://qist.wyfc.qzz.io/jar/fan.txt"),
 ]
 
+# Remove stale files from previous runs
+SOURCE_IDS = {s[0] for s in SOURCES}
+for f in list(CLEAN.glob("*.json")):
+    if f.stem not in SOURCE_IDS:
+        f.unlink()
+        print(f"  (removed stale {f.name})")
+JAR_NAMES = {j[0] for j in JARS}
+for f in list(JAR_DIR.iterdir()):
+    if f.name not in JAR_NAMES:
+        f.unlink()
+        print(f"  (removed stale jar/{f.name})")
+
 def clean_txt(txt):
     txt = re.sub(r'/\*.*?\*/', '', txt, flags=re.DOTALL)
     txt = re.sub(r'//[^\n]*', '', txt)

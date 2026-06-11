@@ -8,7 +8,7 @@ import json, os, urllib.request, re, pathlib, sys
 GH_USER = os.environ.get("GH_USER", "mnyuer")
 REPO = os.environ.get("REPO", "tvbox-manager")
 JAR_BASE = f"https://{GH_USER}.github.io/{REPO}/jar"
-RAW_BASE = f"https://raw.githubusercontent.com/{GH_USER}/{REPO}/main/static/clean"
+RAW_BASE = f"https://{GH_USER}.github.io/{REPO}/static/clean"
 
 WORK = pathlib.Path(".")
 CLEAN = WORK / "static" / "clean"
@@ -16,28 +16,15 @@ JAR_DIR = WORK / "static" / "jar"
 CLEAN.mkdir(parents=True, exist_ok=True)
 JAR_DIR.mkdir(parents=True, exist_ok=True)
 
+# (id, url, display_name)
 SOURCES = [
-    ("jsm",     "https://qist.wyfc.qzz.io/jsm.json"),
-    ("0821",    "https://qist.wyfc.qzz.io/0821.json"),
-    ("0826",    "https://qist.wyfc.qzz.io/0826.json"),
-    ("0827",    "https://qist.wyfc.qzz.io/0827.json"),
-    ("0707",    "https://qist.wyfc.qzz.io/0707.json"),
-    ("js",      "https://qist.wyfc.qzz.io/js.json"),
-    ("XYQ",     "https://qist.wyfc.qzz.io/XYQ.json"),
-    ("fty",     "https://qist.wyfc.qzz.io/fty.json"),
-    ("xiaosa",  "https://qist.wyfc.qzz.io/xiaosa/api.json"),
-    ("mo_yu_er","https://6800.kstore.vip/fish.json"),
-    ("jundie",  "http://home.jundie.top:81/top98.json"),
+    ("jsm",  "https://qist.wyfc.qzz.io/jsm.json",  "jsm全家桶"),
+    ("0821", "https://qist.wyfc.qzz.io/0821.json", "0821 大而全"),
 ]
 
 JARS = [
-    ("spider.jar",      "https://qist.wyfc.qzz.io/jar/spider.jar"),
-    ("custom_spider.jar","https://qist.wyfc.qzz.io/jar/custom_spider.jar"),
-    ("pg.jar",           "https://qist.wyfc.qzz.io/jar/pg.jar"),
-    ("XYQ.jar",          "https://qist.wyfc.qzz.io/jar/XYQ.jar"),
-    ("fan.txt",          "https://qist.wyfc.qzz.io/jar/fan.txt"),
-    ("top98_1.jar",      "http://home.jundie.top:81/jar/top98_1.jar"),
-    ("fish06090225.jar", "https://tc-new.z.wiki/autoupload/iYHTWVx6T8RrCmqdGD6MOdiO_OyvX7mIgxFBfDMDErs/20260609/ieKK/fish06090225.jar"),
+    ("spider.jar", "https://qist.wyfc.qzz.io/jar/spider.jar"),
+    ("fan.txt",    "https://qist.wyfc.qzz.io/jar/fan.txt"),
 ]
 
 def clean_txt(txt):
@@ -51,7 +38,7 @@ def fetch(url, timeout=15):
     return urllib.request.urlopen(req, timeout=timeout).read()
 
 # ── Clean JSON sources ──
-for sid, url in SOURCES:
+for sid, url, _ in SOURCES:
     print(f"=== {sid} ===")
     try:
         raw = fetch(url).decode("utf-8", errors="replace")
@@ -68,16 +55,20 @@ for sid, url in SOURCES:
             print(f"  parse FAILED: {e}")
             continue
 
-    # Rewrite spider
+    # Rewrite spider jar path -> GitHub Pages
     sp = d.get("spider", "")
     if sp:
-        jname = sp.split(";")[0].strip()
-        if not jname.startswith("http"):
-            base = jname.rsplit("/", 1)[-1]
-            d["spider"] = f"{JAR_BASE}/{base}"
-            rest = sp.split(";")[1:] if ";" in sp else []
-            if rest:
-                d["spider"] += ";" + ";".join(rest)
+        parts = [p.strip() for p in sp.split(";")]
+        new_parts = []
+        for p in parts:
+            if p.startswith("http"):
+                new_parts.append(p)
+            elif p.startswith("./") or p.startswith("/"):
+                fname = p.rsplit("/", 1)[-1]
+                new_parts.append(f"{JAR_BASE}/{fname}")
+            else:
+                new_parts.append(p)
+        d["spider"] = ";".join(new_parts)
 
     (CLEAN / f"{sid}.json").write_text(json.dumps(d, ensure_ascii=False, indent=2))
     print(f"  saved: {len(d.get('sites',[]))} sites")
@@ -92,19 +83,11 @@ for fname, url in JARS:
         print(f"JAR {fname} FAILED: {e}")
 
 # ── Generate multi.json ──
+names_map = {sid: sname for sid, _, sname in SOURCES}
 urls = []
 for f in sorted(CLEAN.glob("*.json")):
     sid = f.stem
-    try:
-        d = json.loads(f.read_text())
-        name = d.get("name", sid)
-    except:
-        name = sid
-    # Find original source name from SOURCES
-    for sid2, _ in SOURCES:
-        if sid2 == sid:
-            name = next((n for n, u in SOURCES if u.endswith(f"/{sid}.json") or sid in u), sid)
-            break
+    name = names_map.get(sid, sid)
     urls.append({"url": f"{RAW_BASE}/{sid}.json", "name": name})
 
 (WORK / "multi.json").write_text(json.dumps({"urls": urls}, ensure_ascii=False, indent=2))
@@ -114,11 +97,11 @@ print(f"\nmulti.json: {len(urls)} sources")
 MIGU_URL = "https://raw.githubusercontent.com/develop202/migu_video/main/interface.txt"
 print("\n=== Mirror Migu live source ===")
 try:
-    req = urllib.request.Request(MIGU_URL, headers=HEADERS)
+    req = urllib.request.Request(MIGU_URL, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=30) as resp:
         data = resp.read()
     (WORK / "migu.m3u").write_bytes(data)
     ch_count = sum(1 for l in data.decode("utf-8", errors="replace").splitlines() if l.startswith("#EXTINF"))
-    print(f"  ✅ migu.m3u: {len(data)} bytes, {ch_count} channels")
+    print(f"  migu.m3u: {len(data)} bytes, {ch_count} channels")
 except Exception as e:
-    print(f"  ❌ Migu mirror failed: {e}")
+    print(f"  Migu mirror failed: {e}")

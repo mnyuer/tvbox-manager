@@ -90,7 +90,7 @@ def set_cached(url, data):
     with open(CACHE_DIR / f"{k}.json", "w") as f:
         json.dump(data, f)
 
-def fetch_config(url, timeout=10):
+def fetch_config(url, timeout=8):
     """尝试直接请求或通过镜像代理请求"""
     # 检查缓存
     cached = get_cached(url)

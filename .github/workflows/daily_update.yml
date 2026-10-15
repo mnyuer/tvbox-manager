@@ -5,28 +5,55 @@ on:
     - cron: '0 4 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-tvbox-update
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
+        with:
+          python-version: '3.12'
 
       - name: Download & clean JSON + JAR + generate multi
         env:
           GH_USER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
-        run: |
-          # Remove stale sources not in current SOURCES
-          python3 scripts/github_update.py
+        run: python3 scripts/github_update.py
 
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add static/clean static/jar migu.m3u multi.json
-          git diff --quiet && echo "No changes" || {
-            git commit -m "🛠️ Daily TVBox refresh $(date +%F)"
+
+          # 心跳文件：即使上游内容没变化，也让仓库每天有一次提交活动。
+          # 这是绕开 GitHub「仓库长期无活动即自动禁用定时任务」的关键。
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .last_run
+
+          # 注意：git add 的多个 pathspec 只要有一个不存在，整条命令就会报错且什么都不暂存。
+          # 所以先加“必然存在”的路径，再单独处理可能有缺失的 migu.m3u。
+          git add -A static/clean static/jar multi.json .last_run
+          if [ -f migu.m3u ]; then git add migu.m3u; fi
+
+          if git diff --cached --quiet; then
+            echo "无改动（.last_run 每天都会变，正常不该走到这里）"
+          else
+            git commit -m "🛠️ Daily TVBox refresh $(date -u +%F)"
             git push
-          }
+          fi
+
+      - name: Fail loudly if any source was broken
+        run: |
+          echo "--- 抓取结果 ---"
+          cat run_status.txt
+          if [ "$(head -n1 run_status.txt)" != "OK" ]; then
+            echo "::error::上游抓取存在失败项，见上方日志"
+            exit 1
+          fi

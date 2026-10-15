@@ -8,7 +8,9 @@ Downloads, cleans JSON sources, fetches JARs, generates multi.json.
      Cloudflare 前端 qist.wyfc.qzz.io 降为兜底。原脚本用 qzz.io 作为唯一源，
      在 Actions 里一直下载失败并被 except 静默吞掉 —— 这是仓库 4 个月无提交的根因。
   2. 加了重试与多源回退。
-  3. 不再静默失败：写 run_status.txt，由 workflow 最后一步决定是否把任务标红。
+  3. 不再静默失败：写 run_status.txt，由 workflow 决定是否把任务标红。
+     分级：核心源（jsm/0821/jar）失败 → FAILED 标红；镜像类（migu）降级 → WARN，
+     保留保护闸门但不让任务变红（2026-10-15 按用户要求，避免每天收失败邮件）。
 """
 import json, os, re, pathlib, sys, time, urllib.request
 
@@ -45,7 +47,8 @@ JARS = [
 ]
 MIGU_URLS = ["https://raw.githubusercontent.com/develop202/migu_video/main/interface.txt"]
 
-problems = []
+problems = []   # 致命：核心源（jsm / 0821 / jar）失败 → 任务标红
+warnings = []   # 非致命：镜像类源降级 → 只报警告，不让任务变红
 
 
 def fetch(url, timeout=30, tries=3):
@@ -159,6 +162,7 @@ print(f"\nmulti.json: {len(urls_out)} sources")
 # 注意：develop202/migu_video 已改版，interface.txt 现在只剩一个 #EXTM3U 头（约 469 字节、
 # 0 个频道），频道由该仓库自己的服务动态生成。直接写入会把已有的完整播放列表覆盖成空文件，
 # 所以这里加一道闸：频道数过少就跳过写入并上报，保护现有 migu.m3u。
+# 2026-10-15：按用户要求改为「非致命」—— 保留保护闸门，但不再让整个任务变红（避免每天收失败邮件）。
 print("\n=== Mirror Migu live source ===")
 MIN_CHANNELS = 10
 try:
@@ -166,20 +170,32 @@ try:
     text = data.decode("utf-8", errors="replace")
     ch = sum(1 for l in text.splitlines() if l.startswith("#EXTINF"))
     if ch < MIN_CHANNELS:
-        problems.append(
-            f"migu: 上游 interface.txt 疑似改版，仅 {ch} 个频道（{len(data)} bytes），已跳过写入以保护现有 migu.m3u"
+        warnings.append(
+            f"migu 上游 interface.txt 疑似改版，仅 {ch} 个频道（{len(data)} bytes），"
+            "已跳过写入以保护现有 migu.m3u"
         )
         print(f"  SKIP: 仅 {ch} 个频道（阈值 {MIN_CHANNELS}），保留现有 migu.m3u")
     else:
         (WORK / "migu.m3u").write_bytes(data)
         print(f"  migu.m3u: {len(data)} bytes, {ch} channels")
 except Exception as e:
-    problems.append(f"migu: {e}")
+    warnings.append(f"migu 镜像失败: {e}")
     print(f"  Migu mirror failed: {e}")
 
 # ── 结果落盘，交由 workflow 决定是否标红 ──
-status = "OK" if not problems else "FAILED\n" + "\n".join(problems)
-(WORK / "run_status.txt").write_text(status + "\n")
+# 约定：run_status.txt 第一行只有 OK / FAILED 两种取值。
+#   FAILED → 核心源（jsm / 0821 / jar）出问题，任务标红并触发失败邮件；
+#   OK     → 核心源正常，警告项只输出 ::warning:: 注解，任务保持绿色。
+status = "FAILED" if problems else "OK"
+lines = [status]
+lines += [f"WARN: {w}" for w in warnings]
+lines += [f"FAIL: {p}" for p in problems]
+(WORK / "run_status.txt").write_text("\n".join(lines) + "\n")
+
 print("\n=== 结果 ===")
-print(status)
+print(f"状态: {status}")
+for w in warnings:
+    print(f"  [warn] {w}")
+for p in problems:
+    print(f"  [fail] {p}")
 sys.exit(0)

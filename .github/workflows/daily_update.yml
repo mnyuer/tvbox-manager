@@ -49,11 +49,21 @@ jobs:
             git push
           fi
 
-      - name: Fail loudly if any source was broken
+      - name: Report status
         run: |
           echo "--- 抓取结果 ---"
           cat run_status.txt
+
+          # 非致命项：只打 ::warning:: 注解，任务保持绿色（不触发失败邮件）
+          while IFS= read -r line; do
+            case "$line" in
+              WARN:*) echo "::warning::${line#WARN: }" ;;
+            esac
+          done < run_status.txt
+
+          # 致命项：核心源（jsm / 0821 / jar）失败才标红
           if [ "$(head -n1 run_status.txt)" != "OK" ]; then
-            echo "::error::上游抓取存在失败项，见上方日志"
+            echo "::error::核心源抓取失败，见上方日志"
             exit 1
           fi
+          echo "核心源全部正常。"

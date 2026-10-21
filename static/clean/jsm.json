@@ -1205,10 +1205,7 @@
       "key": "世界听书",
       "name": "世界 • 听书",
       "type": 3,
-      "api": "csp_TingShijie",
-      "searchable": 1,
-      "quickSearch": 0,
-      "changeable": 0,
+      "api": "./py/世界听书.py",
       "style": {
         "type": "list"
       }

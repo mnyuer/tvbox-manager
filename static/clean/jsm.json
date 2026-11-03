@@ -1,5 +1,5 @@
 {
-  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;9265a1d14d8135dc4f1dca0a8b30a130",
+  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;c6c7cbd14359dee31a97abb7ec27df19",
   "lives": [
     {
       "name": "migu",
@@ -183,6 +183,16 @@
       "ext": {
         "url": "http://v.rbotv.cn"
       }
+    },
+    {
+      "key": "快映fox",
+      "name": "快映 • APP",
+      "type": 3,
+      "api": "csp_AppFox",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": "./json/ky4kbgq7b273.json"
     },
     {
       "key": "一起影视",
@@ -788,12 +798,6 @@
       "genre": "shortdrama"
     },
     {
-      "key": "巨量",
-      "name": "巨量 • 影视",
-      "type": 1,
-      "api": "https://api.juliang.live/api/provide/vod"
-    },
-    {
       "key": "飞娱影视",
       "name": "飞娱 • 影视",
       "type": 3,
@@ -906,6 +910,12 @@
       "style": {
         "type": "list"
       }
+    },
+    {
+      "key": "稀饭",
+      "name": "稀饭 • 动漫",
+      "type": 3,
+      "api": "csp_AnimeXifan"
     },
     {
       "key": "巴士动漫",

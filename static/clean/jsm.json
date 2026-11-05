@@ -1,5 +1,5 @@
 {
-  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;c6c7cbd14359dee31a97abb7ec27df19",
+  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;356ad46efe5d2b44a9cb4a6deb9ef0df",
   "lives": [
     {
       "name": "migu",
@@ -939,7 +939,13 @@
       "key": "荐片",
       "name": "荐片 • 磁力",
       "api": "csp_JianPian",
-      "type": 3
+      "type": 3,
+      "ext": {
+        "site": [
+          "https://www.whhyn.com",
+          "https://www.zxfmj.com"
+        ]
+      }
     },
     {
       "key": "New6v",

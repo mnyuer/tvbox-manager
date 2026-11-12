@@ -1,5 +1,5 @@
 {
-  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;c25d34b0cfc044cd1ab3f225097ea7fd",
+  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;a2928946eb00e5fee87663c94ae37bff",
   "lives": [
     {
       "name": "migu",
@@ -192,6 +192,15 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0
+    },
+    {
+      "key": "下饭",
+      "name": "下饭 • APP",
+      "type": 3,
+      "api": "csp_JuXiaFan",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
     },
     {
       "key": "快映fox",

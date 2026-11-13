@@ -1,5 +1,5 @@
 {
-  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;a2928946eb00e5fee87663c94ae37bff",
+  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;d2c9caaaeba20f00baac53295dbed29e",
   "lives": [
     {
       "name": "migu",
@@ -820,12 +820,6 @@
       "name": "懂片 • 影视",
       "type": 3,
       "api": "csp_DongPian"
-    },
-    {
-      "key": "杜北",
-      "name": "杜北 • 影视",
-      "type": 3,
-      "api": "csp_Dubk"
     },
     {
       "key": "星辰影视",

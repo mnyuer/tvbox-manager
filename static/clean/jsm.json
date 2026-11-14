@@ -1,5 +1,5 @@
 {
-  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;d2c9caaaeba20f00baac53295dbed29e",
+  "spider": "https://mnyuer.github.io/tvbox-manager/jar/spider.jar;md5;cbe016eb3cb002ae62058604843f5106",
   "lives": [
     {
       "name": "migu",
@@ -814,6 +814,12 @@
         "分类url": "https://www.mochadj.com/i/{cateId}-{catePg}.html"
       },
       "genre": "shortdrama"
+    },
+    {
+      "key": "看剧",
+      "name": "看剧 • 影视",
+      "type": 3,
+      "api": "csp_KanJuAI"
     },
     {
       "key": "懂片",
